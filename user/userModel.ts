@@ -20,10 +20,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    userType: {
-        type: String,
-        required: true,
-    },
     ownerId:{
         type: Schema.Types.ObjectId,
         ref: "SuperUser",
