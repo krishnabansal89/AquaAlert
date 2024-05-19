@@ -20,9 +20,9 @@ const superUserSchema = new Schema({
         type: String,
         required: true,
     },
-    userType: {
+    desc:{
         type: String,
-        required: true,
+        
     },
     });
 
