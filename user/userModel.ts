@@ -5,7 +5,6 @@ const userSchema = new Schema({
     deivceId : {
         type: String,
         required: true,
-        unique: true,
     },
     name: {
         type: String,
@@ -23,6 +22,10 @@ const userSchema = new Schema({
     ownerId:{
         type: Schema.Types.ObjectId,
         ref: "SuperUser",
+    },
+    waterSpend:{
+        type: Number,
+        default: 0,
     },
     houseNo:{
         type: String,
