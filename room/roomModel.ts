@@ -2,6 +2,19 @@ import mongoose from "mongoose";
 import User from "../user/userModel";
 const Schema = mongoose.Schema;
 
+const waterSpendSchema = new Schema({
+    amount:{
+        type: Number,
+        required: true,
+    },
+    date:{
+        type: Date,
+        required: true,
+        default: Date.now,
+    }
+})
+
+
 const roomSchema = new Schema({
     roomName:{
         type: String,
@@ -29,8 +42,8 @@ const roomSchema = new Schema({
         type: Number,
         default: 0,
     },
-    roomNo:{
-        type: String,
-        required: true,
-    },
+    waterSpendHistory : [waterSpendSchema]
 })
+
+const Room = mongoose.model("Room", roomSchema);
+export default Room;
