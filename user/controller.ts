@@ -2,6 +2,7 @@ import User from "./userModel";
 import SuperUser from "./superuserModel";
 import jwt from "jsonwebtoken";
 import { Request , Response } from "express";
+import Room from "../room/roomModel";
 const jwtSecret = process.env.JWT_SECRET
 const userController = {
     signup: async (req : Request, res : Response) => {
@@ -33,6 +34,19 @@ const userController = {
         catch (error) {
             res.status(400).send("Data is not Valid");
         }
+    },
+    fetchInfo : async (req:Request , res:Response) => { 
+        const id:string = req.body.id as string
+        const user:any = await User.findById(id);
+        if(!user) return
+        const deviceId = user.deviceId
+        const rooms = await Room.find({
+            deviceId:deviceId
+        })
+        const data:any = {"UserWaterSpend" : user.waterSpend , "Rooms" : rooms}
+        res.status(200).json(data)
+            
+            
     }
 }
 const superUserController = {
@@ -66,6 +80,21 @@ const superUserController = {
         catch (error) {
             res.status(400).send("Data is not Valid");
         }
+    },
+    getUsers : async (req : Request, res : Response) => {
+        const token = req.body.token
+        const decoded = jwt.verify(token, jwtSecret);
+        const users:any = await SuperUser.find({ ownerId : decoded.id });
+        let userData:{houseNo :String , userName :string , waterSpend :number , userId:string };
+        let userDatas:any = [];
+        users.forEach(user => {
+            userData.houseNo = user.houseNo;
+            userData.userName = user.name;
+            userData.waterSpend = user.waterSpend;
+            userData.userId = user.userId;
+            userDatas.push(userData);
+        });
+        return res.status(200).json(userDatas);
     }
 }
 
